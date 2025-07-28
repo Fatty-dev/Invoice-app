@@ -134,9 +134,9 @@ const Invoice = () => {
               </h3>
               <div className="text-gray-600 space-y-2">
                 <p className="font-semibold text-gray-800 text-lg">Envia Logistics</p>
-                <p className="flex items-center"><User className="w-4 h-4 mr-2" />Sarah Johnson</p>
+                {/* <p className="flex items-center"><User className="w-4 h-4 mr-2" />Sarah Johnson</p> */}
                 <p>admin@envia.com</p>
-                <p>+1-555-0123</p>
+                {/* <p>+1-555-0123</p> */}
                 <p className="text-blue-600 font-medium cursor-pointer hover:underline" onClick={hyperLink}>envia.com</p>
                 <p className="pt-2 border-t border-gray-200">123 Logistics Ave, Suite 500</p>
                 <p>New York, NY 10001, USA</p>

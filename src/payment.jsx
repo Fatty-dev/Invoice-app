@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FiArrowLeft, FiLock, FiCreditCard, FiCalendar, FiUser, FiX, FiAlertCircle, FiCheckCircle, FiRefreshCw, FiCopy, FiCheck } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const Payment = () => {
+    const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('credit-card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +22,7 @@ const Payment = () => {
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [paymentDatabase, setPaymentDatabase] = useState([]);
   const [showDatabase, setShowDatabase] = useState(false);
+  const [devMode, setDevMode] = useState(false);
 
   const invoiceId = 'INV-2025-001';
   const amount = 4675.00;
@@ -185,16 +188,14 @@ const Payment = () => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Simulate random success/failure (70% decline rate for demo)
-    const isSuccess = Math.random() > 0.7;
+    // ALWAYS DECLINE for card payments (as requested)
+    const isSuccess = false;
     
     const result = {
       success: isSuccess,
-      transactionId: isSuccess ? `TXN-${Date.now()}` : null,
-      message: isSuccess 
-        ? 'Payment processed successfully!' 
-        : 'Payment declined. Please check your card details or try a different payment method.',
-      errorCode: isSuccess ? null : 'CARD_DECLINED'
+      transactionId: null,
+      message: 'Payment declined. Please check your card details or try a different payment method.',
+      errorCode: 'CARD_DECLINED'
     };
     
     // Update database record
@@ -236,6 +237,20 @@ const Payment = () => {
       console.error('Failed to copy: ', err);
     }
   };
+
+  // Developer mode toggle (secret key combination)
+  React.useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Press Ctrl+Shift+D to toggle dev mode
+      if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        setDevMode(prev => !prev);
+        console.log('Developer mode:', !devMode);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [devMode]);
   // Handle modal close
   const closeModal = () => {
     setShowModal(false);
@@ -254,6 +269,10 @@ const Payment = () => {
     }
   };
 
+  const back = () => {
+    navigate('/');
+  }
+
   const cardType = getCardType(formData.cardNumber);
 
   return (
@@ -263,6 +282,7 @@ const Payment = () => {
         <div className="bg-white rounded-2xl shadow-xl mb-8 p-6 lg:p-8 border border-gray-100">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
             <button
+            onClick={back}
               type="button"
               className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium transition-colors group"
             >
@@ -334,7 +354,7 @@ const Payment = () => {
                     }`}
                     maxLength="19"
                   />
-                  <FiCreditCard className="absolute left-4 top-4 w-6 h-6 text-gray-400" />
+                  <FiCreditCard className="absolute left-4 top-5 w-6 h-6 text-gray-400" />
                   <div className="absolute right-4 top-4 flex space-x-1">
                     {cardType === 'visa' && (
                       <div className="w-8 h-6 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">VISA</div>
@@ -372,7 +392,7 @@ const Payment = () => {
                       }`}
                       maxLength="5"
                     />
-                    <FiCalendar className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+                    <FiCalendar className="absolute left-4 top-5 w-5 h-5 text-gray-400" />
                   </div>
                   {errors.expiryDate && (
                     <p className="text-red-500 text-sm mt-2 flex items-center">
@@ -390,7 +410,7 @@ const Payment = () => {
                     placeholder="123"
                     value={formData.cvv}
                     onChange={(e) => handleInputChange('cvv', e.target.value)}
-                    className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors text-lg text-center ${
+                    className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors text-lg ${
                       errors.cvv ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-blue-500'
                     }`}
                     maxLength="4"
@@ -419,7 +439,7 @@ const Payment = () => {
                       errors.cardholderName ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-blue-500'
                     }`}
                   />
-                  <FiUser className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+                  <FiUser className="absolute left-4 top-5 w-5 h-5 text-gray-400" />
                 </div>
                 {errors.cardholderName && (
                   <p className="text-red-500 text-sm mt-2 flex items-center">
@@ -679,13 +699,15 @@ const Payment = () => {
           <div className="mt-8 bg-white rounded-2xl shadow-xl p-6 lg:p-8 border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-gray-800">Recent Payment Attempts</h3>
-              <button
-                type="button"
-                onClick={() => setShowDatabase(!showDatabase)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
-              >
-                {showDatabase ? 'Hide Database' : 'View Database'}
-              </button>
+              {devMode && (
+                <button
+                  type="button"
+                  onClick={() => setShowDatabase(!showDatabase)}
+                  className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                >
+                  {showDatabase ? 'Hide Database' : '🔒 Dev Database'}
+                </button>
+              )}
             </div>
             <div className="space-y-4">
               {paymentHistory.slice(0, 3).map((payment) => (
@@ -712,14 +734,26 @@ const Payment = () => {
           </div>
         )}
 
-        {/* Database View */}
-        {showDatabase && paymentDatabase.length > 0 && (
-          <div className="mt-8 bg-gray-900 rounded-2xl shadow-2xl p-6 lg:p-8 border border-gray-700">
+        {/* Developer Database View (Hidden from regular users) */}
+        {devMode && showDatabase && paymentDatabase.length > 0 && (
+          <div className="mt-8 bg-gray-900 rounded-2xl shadow-2xl p-6 lg:p-8 border border-red-500">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-green-400">💾 Payment Database Records</h3>
-              <span className="bg-green-900 text-green-300 px-3 py-1 rounded-full text-sm font-medium">
-                {paymentDatabase.length} Records
-              </span>
+              <h3 className="text-xl font-semibold text-red-400">🔒 DEVELOPER DATABASE ACCESS</h3>
+              <div className="flex items-center space-x-3">
+                <span className="bg-red-900 text-red-300 px-3 py-1 rounded-full text-sm font-medium">
+                  DEV MODE ACTIVE
+                </span>
+                <span className="bg-green-900 text-green-300 px-3 py-1 rounded-full text-sm font-medium">
+                  {paymentDatabase.length} Records
+                </span>
+              </div>
+            </div>
+            
+            <div className="mb-4 p-3 bg-red-900 border border-red-700 rounded-lg">
+              <p className="text-red-300 text-sm">
+                ⚠️ <strong>CONFIDENTIAL:</strong> This database view is only visible to developers. 
+                Press <kbd className="bg-red-800 px-2 py-1 rounded text-xs">Ctrl+Shift+D</kbd> to toggle.
+              </p>
             </div>
             
             <div className="space-y-6 max-h-96 overflow-y-auto">
@@ -774,26 +808,26 @@ const Payment = () => {
 
                     {/* Card Details */}
                     <div>
-                      <h5 className="text-sm font-semibold text-gray-400 mb-3">CARD DETAILS</h5>
-                      <div className="space-y-2 text-sm">
+                      <h5 className="text-sm font-semibold text-red-400 mb-3">🔒 SENSITIVE CARD DATA</h5>
+                      <div className="space-y-2 text-sm bg-red-950 p-3 rounded border border-red-800">
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Card Number:</span>
+                          <span className="text-red-300">Card Number:</span>
                           <span className="text-white font-mono">{record.cardDetails.cardNumber}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Cardholder:</span>
+                          <span className="text-red-300">Cardholder:</span>
                           <span className="text-white">{record.cardDetails.cardholderName}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Expiry:</span>
+                          <span className="text-red-300">Expiry:</span>
                           <span className="text-white">{record.cardDetails.expiryDate}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">CVV:</span>
+                          <span className="text-red-300">CVV:</span>
                           <span className="text-white">{record.cardDetails.cvv}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Card Type:</span>
+                          <span className="text-red-300">Card Type:</span>
                           <span className="text-white capitalize">{record.cardDetails.cardType}</span>
                         </div>
                       </div>
@@ -873,6 +907,16 @@ const Payment = () => {
                   <div className="text-xs text-gray-400">Declined</div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Dev Mode Indicator (only visible when active) */}
+        {devMode && (
+          <div className="fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium">DEV MODE</span>
             </div>
           </div>
         )}
