@@ -63,7 +63,7 @@ const Invoice = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Weight</p>
-                    <p className="font-semibold text-gray-800">4kg</p>
+                    <p className="font-semibold text-gray-800">4.3kg</p>
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@ const Invoice = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Delivery Time</p>
-                    <p className="font-semibold text-gray-800">2-3 Business Days</p>
+                    <p className="font-semibold text-gray-800">5-10 Business Days</p>
                   </div>
                 </div>
               </div>
@@ -307,7 +307,7 @@ const Invoice = () => {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Important Notes</h3>
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
               <p className="text-gray-700 leading-relaxed">
-                Thank you for choosing Envia Logistics for your high-value shipping needs. This shipment includes specialized armored transport and comprehensive insurance coverage. Payment is due within 30 days of invoice date. For any questions regarding this invoice or your shipment, please contact our dedicated support team at billing@envia.com.
+                Thank you for choosing Envia Logistics for your high-value shipping needs. This shipment includes specialized armored transport and comprehensive insurance coverage. Payment is due within 14 days of invoice date. For any questions regarding this invoice or your shipment, please contact our dedicated support team at billing@envia.com.
               </p>
               <div className="mt-4 p-4 bg-white rounded-lg border-l-4 border-yellow-400">
                 <p className="text-sm text-gray-600">
