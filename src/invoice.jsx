@@ -33,9 +33,10 @@ const Invoice = () => {
               <div className="text-left lg:text-right text-white">
                 <h2 className="text-4xl lg:text-5xl font-bold mb-4">INVOICE</h2>
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 space-y-2 text-sm">
-                  <p className="flex justify-between"><span>Invoice no:</span> <span className="font-semibold">INV-2025-001</span></p>
-                  <p className="flex justify-between"><span>Invoice date:</span> <span className="font-semibold">Jul 28th, 2024</span></p>
-                  <p className="flex justify-between"><span>Due date:</span> <span className="font-semibold">Aug 28th, 2024</span></p>
+                  <p className="flex justify-between"><span>Invoice no:</span> <span className="font-semibold">ENV-2025-0016
+                  </span></p>
+                  <p className="flex justify-between"><span>Invoice date:</span> <span className="font-semibold">Jul 29th, 2025</span></p>
+                  <p className="flex justify-between"><span>Due date:</span> <span className="font-semibold">Aug 13th, 2025</span></p>
                 </div>
               </div>
             </div>
@@ -51,7 +52,7 @@ const Invoice = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Package Type</p>
-                    <p className="font-semibold text-gray-800">High-Value Parcel</p>
+                    <p className="font-semibold text-gray-800">Consignment Box</p>
                   </div>
                 </div>
               </div>
@@ -62,7 +63,7 @@ const Invoice = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Weight</p>
-                    <p className="font-semibold text-gray-800">45.2 kg</p>
+                    <p className="font-semibold text-gray-800">4kg</p>
                   </div>
                 </div>
               </div>
@@ -104,9 +105,9 @@ const Invoice = () => {
                   Origin
                 </h4>
                 <div className="space-y-2 text-gray-700">
-                  <p className="font-medium">Envio Logistics Warehouse</p>
-                  <p>123 Logistics Ave, Suite 500</p>
-                  <p>New York, NY 10001, USA</p>
+                  <p className="font-medium">Envia Logistics Warehouse</p>
+                  <p>2151 NW 79th Ave, Doral, FL</p>
+                  <p>33122, United States</p>
                   <p className="text-sm text-green-600 font-medium">Ready for Pickup</p>
                 </div>
               </div>
@@ -138,8 +139,8 @@ const Invoice = () => {
                 <p>admin@envia.com</p>
                 {/* <p>+1-555-0123</p> */}
                 <p className="text-blue-600 font-medium cursor-pointer hover:underline" onClick={hyperLink}>envia.com</p>
-                <p className="pt-2 border-t border-gray-200">123 Logistics Ave, Suite 500</p>
-                <p>New York, NY 10001, USA</p>
+                <p className="pt-2 border-t border-gray-200">2151 NW 79th Ave, Doral, FL</p>
+                <p>33122, United States</p>
               </div>
             </div>
             

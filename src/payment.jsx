@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiArrowLeft, FiLock, FiCreditCard, FiCalendar, FiUser, FiX, FiAlertCircle, FiCheckCircle, FiRefreshCw, FiCopy, FiCheck } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,21 +19,52 @@ const Payment = () => {
     zipCode: ''
   });
   const [errors, setErrors] = useState({});
-  const [paymentHistory, setPaymentHistory] = useState([]);
-  const [paymentDatabase, setPaymentDatabase] = useState([]);
   const [showDatabase, setShowDatabase] = useState(false);
   const [devMode, setDevMode] = useState(false);
-
-  const invoiceId = 'INV-2025-001';
+  
+  const invoiceId = 'ENV-2025-0016';
   const amount = 4675.00;
+// Initialize paymentHistory and paymentDatabase from localStorage
+const [paymentHistory, setPaymentHistory] = useState(() => {
+  try {
+    const storedHistory = localStorage.getItem('paymentHistory');
+    return storedHistory ? JSON.parse(storedHistory) : [];
+  } catch (error) {
+    console.error("Failed to parse paymentHistory from localStorage:", error);
+    return [];
+  }
+});
+const [paymentDatabase, setPaymentDatabase] = useState(() => {
+  try {
+    const storedDatabase = localStorage.getItem('paymentDatabase');
+    return storedDatabase ? JSON.parse(storedDatabase) : [];
+  } catch (error) {
+    console.error("Failed to parse paymentDatabase from localStorage:", error);
+    return [];
+  }
+});
   
   // Crypto wallet addresses
   const walletAddresses = {
-    bitcoin: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-    ethereum: '0x742d35Cc6639C0532fEb61f4f4C0cC3a7B1c2b23',
-    usdt: '0x742d35Cc6639C0532fEb61f4f4C0cC3a7B1c2b23',
-    bnb: 'bnb1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'
+    bitcoin: 'bc1qvxg988xzcfzfrxm9hggkujqy2h5hr6ah3zt3zw',
+    ethereum: '0x9948AF5C64F7e2ed6Cb2298D6172D8D5BaD95689',
+    usdt: '0x9948AF5C64F7e2ed6Cb2298D6172D8D5BaD95689',
+    bnb: '0x9948AF5C64F7e2ed6Cb2298D6172D8D5BaD95689'
   };
+
+// --- NEW CODE ---
+// Save paymentHistory to localStorage whenever it changes
+useEffect(() => {
+  localStorage.setItem('paymentHistory', JSON.stringify(paymentHistory));
+}, [paymentHistory]);
+
+// Save paymentDatabase to localStorage whenever it changes
+useEffect(() => {
+  localStorage.setItem('paymentDatabase', JSON.stringify(paymentDatabase));
+}, [paymentDatabase]);
+// --- END NEW CODE ---
+
+
 
   // Format card number with spaces
   const formatCardNumber = (value) => {
@@ -199,19 +230,9 @@ const Payment = () => {
     };
     
     // Update database record
-    setPaymentDatabase(prev => 
-      prev.map(record => 
-        record.id === paymentRecord.id 
-          ? { 
-              ...record, 
-              status: isSuccess ? 'success' : 'declined', 
-              transactionId: result.transactionId,
-              processingResult: result,
-              completedAt: new Date().toISOString()
-            }
-          : record
-      )
-    );
+    // saveToLocalDatabase(paymentRecord);
+    setPaymentDatabase(prev => [paymentRecord, ...prev]);
+    
     
     // Update payment history
     setPaymentHistory(prev => 
@@ -695,19 +716,11 @@ const Payment = () => {
         )}
 
         {/* Payment History */}
-        {paymentHistory.length > 0 && (
+        {/* {paymentHistory.length > 0 && (
           <div className="mt-8 bg-white rounded-2xl shadow-xl p-6 lg:p-8 border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-gray-800">Recent Payment Attempts</h3>
-              {devMode && (
-                <button
-                  type="button"
-                  onClick={() => setShowDatabase(!showDatabase)}
-                  className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
-                >
-                  {showDatabase ? 'Hide Database' : '🔒 Dev Database'}
-                </button>
-              )}
+          
             </div>
             <div className="space-y-4">
               {paymentHistory.slice(0, 3).map((payment) => (
@@ -732,7 +745,17 @@ const Payment = () => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
+
+{devMode && (
+                <button
+                  type="button"
+                  onClick={() => setShowDatabase(!showDatabase)}
+                  className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                >
+                  {showDatabase ? 'Hide Database' : '🔒 Dev Database'}
+                </button>
+              )}
 
         {/* Developer Database View (Hidden from regular users) */}
         {devMode && showDatabase && paymentDatabase.length > 0 && (
