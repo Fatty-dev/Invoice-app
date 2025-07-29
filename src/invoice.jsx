@@ -136,7 +136,7 @@ const Invoice = () => {
               <div className="text-gray-600 space-y-2">
                 <p className="font-semibold text-gray-800 text-lg">Envia Logistics</p>
                 {/* <p className="flex items-center"><User className="w-4 h-4 mr-2" />Sarah Johnson</p> */}
-                <p>admin@envia.com</p>
+                {/* <p>admin@envia.com</p> */}
                 {/* <p>+1-555-0123</p> */}
                 <p className="text-blue-600 font-medium cursor-pointer hover:underline" onClick={hyperLink}>envia.com</p>
                 <p className="pt-2 border-t border-gray-200">2151 NW 79th Ave, Doral, FL</p>
@@ -307,7 +307,7 @@ const Invoice = () => {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Important Notes</h3>
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
               <p className="text-gray-700 leading-relaxed">
-                Thank you for choosing Envia Logistics for your high-value shipping needs. This shipment includes specialized armored transport and comprehensive insurance coverage. Payment is due within 14 days of invoice date. For any questions regarding this invoice or your shipment, please contact our dedicated support team at billing@envia.com.
+                Thank you for choosing Envia Logistics for your high-value shipping needs. This shipment includes specialized armored transport and comprehensive insurance coverage. Payment is due within 14 days of invoice date.
               </p>
               <div className="mt-4 p-4 bg-white rounded-lg border-l-4 border-yellow-400">
                 <p className="text-sm text-gray-600">
