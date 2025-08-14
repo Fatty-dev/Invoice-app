@@ -64,14 +64,7 @@ const PaymentSuccess = () => {
               <div className="text-white">
                 <h3 className="text-2xl font-bold mb-2">Payment Confirmed</h3>
                 <p className="text-blue-100">
-                  Transaction completed on{" "}
-                  {new Date().toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  Transaction completed on August 12, 2025
                 </p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-white">
@@ -225,7 +218,7 @@ const PaymentSuccess = () => {
             <p className="flex items-start space-x-2">
               <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></span>
               <span>
-                Your package is fully insured for $1,200.00 and will be handled
+                Your package is fully insured and will be handled
                 with maximum security protocols.
               </span>
             </p>
