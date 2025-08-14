@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from "./assets/logo.svg"
+import logo from "../assets/logo.svg"
 import { CreditCard, ArrowLeft, Lock, Calendar, User, Package, Truck, Weight, MapPin, Clock, Shield, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
