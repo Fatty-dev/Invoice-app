@@ -35,8 +35,8 @@ const Invoice = () => {
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 space-y-2 text-sm">
                   <p className="flex justify-between"><span>Invoice no:</span> <span className="font-semibold">ENV-2025-0016
                   </span></p>
-                  <p className="flex justify-between"><span>Invoice date:</span> <span className="font-semibold">Jul 29th, 2025</span></p>
-                  <p className="flex justify-between"><span>Due date:</span> <span className="font-semibold">Aug 13th, 2025</span></p>
+                  <p className="flex justify-between"><span>Invoice date:</span> <span className="font-semibold">Aug 21st, 2025</span></p>
+                  <p className="flex justify-between"><span>Due date:</span> <span className="font-semibold">Sept 5th, 2025</span></p>
                 </div>
               </div>
             </div>
@@ -117,9 +117,9 @@ const Invoice = () => {
                   Destination
                 </h4>
                 <div className="space-y-2 text-gray-700">
-                  <p className="font-medium">Emil Kuster</p>
-                  <p>Hauptstrasse 11</p>
-                  <p>9565 Bussnang, Switzerland</p>
+                  <p className="font-medium">Lucas Liebminger</p>
+                  <p>Hauptplatz 3</p>
+                  <p>Tur 12,3.stock,8700 Leoben</p>
                   <p className="text-sm text-blue-600 font-medium">Awaiting Delivery</p>
                 </div>
               </div>
@@ -150,11 +150,11 @@ const Invoice = () => {
                 Bill to
               </h3>
               <div className="text-gray-600 space-y-2">
-                <p className="font-semibold text-gray-800 text-lg">Emil Kuster</p>
-                <p>emil.kuster@bluewin.ch</p>
-                <p>+410799108181</p>
-                <p className="pt-2 border-t border-gray-200">Hauptstrasse 11</p>
-                <p>9565 Bussnang, Switzerland</p>
+                <p className="font-semibold text-gray-800 text-lg">Lucas Liebminger</p>
+                <p>lliebminger@yahoo.com</p>
+                <p>+436641007270</p>
+                <p className="pt-2 border-t border-gray-200">Hauptplatz 3</p>
+                <p>Tur 12,3.stock,8700 Leoben</p>
               </div>
             </div>
           </div>

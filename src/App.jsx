@@ -4,12 +4,14 @@ import InvoicePage from "./Invoice/invoice";
 import Payment from "./Invoice/payment";
 import TrackingPage from "./Tracking/Tracking";
 import PaymentSuccess from "./Invoice/PaymentSuccess";
+import Invoice from "./Invoice/invoice";
 const App = () => {
   return (
     <Router>
       <Routes>
         {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/payment" element={<Payment />} />
+        <Route path="/invoice" element={<Invoice />} />
         <Route path="/" element={<PaymentSuccess />} />
         <Route path="/track" element={<TrackingPage />} />
 

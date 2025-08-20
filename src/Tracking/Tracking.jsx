@@ -69,8 +69,7 @@ const TrackingPage = () => {
         date: 'Aug 14, 2025',
         time: '10:15 AM',
         location: 'Over Atlantic Ocean',
-        completed: false,
-        current: true,
+        completed: true,
         description: 'Package in transit on international flight'
       },
       {
@@ -78,7 +77,7 @@ const TrackingPage = () => {
         date: 'Expected Aug 19, 2025',
         time: 'TBD',
         location: 'Zurich, Switzerland (ZUR)',
-        completed: false,
+        completed: true,
         description: 'Expected arrival at destination airport'
       },
       {
@@ -87,6 +86,7 @@ const TrackingPage = () => {
         time: 'TBD',
         location: 'Zurich, Switzerland',
         completed: false,
+        current:true,
         description: 'Import customs processing'
       },
       {
