@@ -273,7 +273,7 @@ const processPayment = async () => {
   };
 
   const back = () => {
-    navigate('/');
+    navigate('/invoice');
   }
 
   const cardType = getCardType(formData.cardNumber);
